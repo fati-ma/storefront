@@ -1,10 +1,15 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { active } from '../store/categories-reducer.js';
 import { Link, Typography } from '@material-ui/core'
+import * as actions from '../store/actions';
 
-const activeCategories = props => {
- 
+const ActiveCategories = props => {
+    const fetchData = (e) => {
+        props.getcat();
+    }
+
+    useEffect(fetchData, [])
     return (
         <>
             <div style={{ fontSize: '24px' }}>
@@ -13,15 +18,9 @@ const activeCategories = props => {
             <br />
             <section>
                 <Typography>
-
                     {props.activeOne.categories.map((category, idx) => {
-
-                        return <Link key={idx} onClick={() => props.active(category.name)} href="#">{category.display_name.toUpperCase()} | </Link>
-
+                        return <Link style={{ borderLeft: "solid #2E3B55 4px", color: "#2E3B55", padding: "2px", magginRight: "25px" }} key={idx} onClick={() => props.active(category.name)} href="#">{category.name.toUpperCase()} </Link>
                     })}
-                  
-
-
                 </Typography>
             </section>
 
@@ -33,7 +32,8 @@ const activeCategories = props => {
 const mapStateToProps = state => ({
     activeOne: state.categories
 });
-
-const mapDispatchToProps = { active }
-
-export default connect(mapStateToProps, mapDispatchToProps)(activeCategories)
+const mapDispatchToProps = (dispatch, getState, string) => ({
+    getcat: () => dispatch(actions.getRemoteCategories()),
+    active: (string) => dispatch(active(string))
+})
+export default connect(mapStateToProps, mapDispatchToProps)(ActiveCategories)

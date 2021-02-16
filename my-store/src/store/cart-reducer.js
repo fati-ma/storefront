@@ -1,51 +1,55 @@
 let initalState = {
-    products: [
-        { name: 'TV', category: 'electronics', price: 699.00,  inStock: 5},
-        { name: 'Camera', category: 'electronics', price: 400.00, inStock: 3 },
-        { name: 'Radio', category: 'electronics', price: 99.00, inStock: 15 },
-        { name: 'Shirt', category: 'clothing', price: 9.00, inStock: 25 },
-        { name: 'Socks', category: 'clothing', price: 12.00, inStock: 10 },
-        { name: 'Apples', category: 'food', price: .99, inStock: 500 },
-        { name: 'Eggs', category: 'food', price: 1.99, inStock: 12 },
-        { name: 'Bread', category: 'food', price: 2.39, inStock: 90 },
-    ],
+    products: [],
     filetredProduct: [],
-    productsInCart:[],
-    numAdded:0
-
-
+    productsInCart: []
 };
 
 
 export default (state = initalState, action) => {
 
-    console.log("action in reducer ---> ", action)
-    console.log("state ---> ", state)
     let { type, payload } = action;
     switch (type) {
+        case 'GET':
+            let products = payload.results.filter(product => {
+                if (product.inStock > 0) {
+                    return product;
+                }
+            });
 
+            return { ...state, products };
         case 'ADDEDTOCART':
-           
-          
-            const productsInCart =  state.products.filter(product => {
-                if (product.name == payload) {
+
+            const productsInCart = state.products.filter(product => {
+                if (product.name == payload.name) {
                     return product;
                 }
             });
             let newState = productsInCart[0];
-            console.log('from added to cart--> new state ' , newState)
-            return { ...state, productsInCart:[...state.productsInCart,newState] };
-          
-    
+            return { ...state, productsInCart: [...state.productsInCart, newState] };
+        case 'DELETE':
+            const productInCart = state.productsInCart.filter(product => {
+                if (product.name !== payload.name) {
+                    return product;
+                }
+            });
+            let stateAfterDelete = productInCart;
+            console.log('from cart after delete ', stateAfterDelete)
+            return { ...state, productsInCart: stateAfterDelete };
 
         default:
             return state;
     }
 }
 
-export const addedToCart = (name) => {
+export const addedToCart = (payload) => {
     return {
         type: 'ADDEDTOCART',
-        payload: name
+        payload: payload
+    }
+}
+export const deletefromCart = payload => {
+    return {
+        type: 'DELETE',
+        payload: payload
     }
 }
