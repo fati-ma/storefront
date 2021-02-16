@@ -14,7 +14,7 @@
 
 `npm i` the dependencies in the image below
 
-![dep](assets/depend.PNG)
+![dep](assets/depen.PNG)
 
 
 
