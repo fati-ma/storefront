@@ -1,14 +1,12 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
-
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
-
-import { addedToCart } from '../store/products-reducer.js';
+import * as actions from '../store/actions';
 
 const useStyles = makeStyles({
     root: {
@@ -28,43 +26,45 @@ const useStyles = makeStyles({
 });
 
 
-// to show totlaVotes from the store
-
 const Status = props => {
+    const fetchData = (e) => {
+        props.get();
+    }
     const classes = useStyles();
     const bull = <span className={classes.bullet}>•</span>;
+    useEffect(fetchData, [])
 
     return (
         <>
             <section>
-                        {props.filetredProduct.map((product, idx) => {
-              return  <Card className={classes.root} variant="outlined">
-                    <CardContent>
-                             <Typography className={classes.title} key={idx} color="textSecondary" gutterBottom>
+                {props.filetredProduct.map((product, idx) => {
+                    return <Card className={classes.root} variant="outlined">
+                        <CardContent>
+                            <Typography className={classes.title} key={idx} color="textSecondary" gutterBottom>
                                 {product.name}
                             </Typography>
-                    </CardContent>
-                    <CardActions>
-                        <Button size="small" onClick={()=> props.addedToCart(product.name)}>Add To Cart</Button>
-                        <Button size="small"  >View details</Button>
-                    </CardActions>
-                </Card>
-                        })}
+                        </CardContent>
+                        <CardActions>
+                            <Button size="small" onClick={() => props.update(product)}>Add To Cart</Button>
+                            <Button size="small">View details</Button>
+                        </CardActions>
+                    </Card>
+                })}
             </section>
         </>
     )
 }
 
-// I do not have any action here so no need to do mapDispatchToProps
-// I will only use mapStateToProps
+
 const mapStateToProps = state => ({
     myProducts: state.products.products,
     filetredProduct: state.products.filetredProduct,
-    myProductsInCart : state.products.productsInCart 
+    myProductsInCart: state.products.productsInCart
 
 });
-
-const mapDispatchToProps = {addedToCart}
-
+const mapDispatchToProps = (dispatch, getState) => ({
+    get: () => dispatch(actions.getRemoteData()),
+    update: (obj) => dispatch(actions.updateInstockdecrement(obj))
+})
 
 export default connect(mapStateToProps, mapDispatchToProps)(Status);

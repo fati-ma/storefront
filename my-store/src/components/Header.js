@@ -2,7 +2,7 @@ import React from 'react';
 import { Tab, AppBar, Tabs, Typography } from '@material-ui/core'
 import '../styles/header.scss'
 import ItemInCart from './SimpleCart'
-// import {Link, NavLink} from 'react-router-dom';
+
 class Header extends React.Component {
     render() {
         return (
@@ -11,8 +11,8 @@ class Header extends React.Component {
                 <AppBar position="static" style={{ background: '#2E3B55' }}>
                     <Tabs aria-label="simple tabs example" indicatorColor="transparent" color='black'
                         textColor="transparent">
-                            <h1>OUR STORE</h1>
-                        <ItemInCart/>
+                        <h1>OUR STORE</h1>
+                        <ItemInCart />
                     </Tabs>
                 </AppBar>
 
