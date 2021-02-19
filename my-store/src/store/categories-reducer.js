@@ -5,7 +5,6 @@ let initalState = {
 
 export default (state = initalState, action) => {
     let { type, payload } = action;
-
     switch (type) {
         case 'GETCATEGORY':
             let categories = payload.results
