@@ -1,5 +1,5 @@
 import React from 'react';
-import { Tab, AppBar, Tabs, Typography } from '@material-ui/core'
+import { Tabs, AppBar } from '@material-ui/core'
 import '../styles/header.scss'
 import ItemInCart from './SimpleCart'
 

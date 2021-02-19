@@ -28,11 +28,17 @@ export const updateInstockdecrement = (obj) => (dispatch) => {
 export const updateInstockIncrement = (obj) => (dispatch) => {
     console.log("dispatch :", dispatch)
     console.log("inside dispatch of pdateInstockdecrement!!!! ");
-    let newObj = { ...obj, inStock: obj.inStock + 1 }
+    let newObj = { ...obj, inStock: obj.inStock }
     newObj = JSON.stringify(newObj);
     console.log('the new obj after change in put incrment', newObj);
     return superagent.put(`${api}/products/${obj._id}`).set('Content-Type', 'application/json').send(newObj).then(data => {
         dispatch(deletefromCart(data.body));
+    });
+}
+export const getDetailedObj = (id) => (dispatch) => {
+    return superagent.get(`${api}/products/${id}`).then(data => {
+        console.log("we got the data : data.body =", data.body)
+        dispatch(getDetails(data.body))
     });
 }
 
@@ -58,6 +64,12 @@ const addedToCart = payload => {
 const deletefromCart = payload => {
     return {
         type: 'DELETE',
+        payload: payload
+    }
+}
+const getDetails = payload => {
+    return {
+        type: 'GETDETAILS',
         payload: payload
     }
 }
